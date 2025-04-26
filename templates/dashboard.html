@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>AI Assistant</h3>
+            <button class="btn-close d-md-none" id="closeSidebar"></button>
+        </div>
+        <div class="user-info">
+            <div class="avatar">
+                <i class="fa fa-user-circle"></i>
+            </div>
+            <div class="user-details">
+                <h5>{{ current_user.username }}</h5>
+                <small>{{ current_user.email }}</small>
+            </div>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="toggleChatHistory">
+                    <i class="fas fa-history"></i> Chat History
+                </a>
+                <ul class="chat-history-list" id="chatHistoryList" style="display:none; margin-left: 15px;"></ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('profile') }}">
+                    <i class="fas fa-user-cog"></i> Profile Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <button class="menu-toggle d-md-none" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <p>Welcome back, {{ current_user.username }}!</p>
+            </div>
+
+            <!-- Chatbot Interface -->
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <h3>AI Assistant</h3>
+                    <p>Ask me anything about our platform!</p>
+                </div>
+                <div class="chatbot-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            Hello! I'm your AI assistant. How can I help you today?
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-input">
+                    <input type="text" id="userMessage" placeholder="Type your message here...">
+                    <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<script>
+    const chatMessages = document.getElementById('chatMessages');
+    const historyList = document.getElementById('chatHistoryList');
+
+    document.getElementById('toggleChatHistory').addEventListener('click', function () {
+        if (historyList.style.display === 'none') {
+            historyList.style.display = 'block';
+
+            fetch('{{ url_for("chat_history") }}')
+                .then(res => res.json())
+                .then(data => {
+                    historyList.innerHTML = '';
+                    if (Object.keys(data).length === 0) {
+                        historyList.innerHTML = "<li>No chat history found.</li>";
+                    } else {
+                        for (const [date, chats] of Object.entries(data)) {
+                            const dateItem = document.createElement('li');
+                            dateItem.classList.add('chat-date');
+                            dateItem.textContent = date;
+                            dateItem.style.cursor = 'pointer';
+
+                            dateItem.addEventListener('click', () => {
+                                chatMessages.innerHTML = '';
+                                chats.forEach(chat => {
+                                    chatMessages.innerHTML += `
+                                        <div class="message user-message">
+                                            <div class="message-content">${chat.message}</div>
+                                        </div>
+                                        <div class="message bot-message">
+                                            <div class="message-content">${chat.response}</div>
+                                        </div>
+                                    `;
+                                });
+                            });
+
+                            historyList.appendChild(dateItem);
+                        }
+                    }
+                });
+        } else {
+            historyList.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

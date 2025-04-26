@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar Navigation - Same as dashboard.html -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>AI Assistant</h3>
+            <button class="btn-close d-md-none" id="closeSidebar"></button>
+        </div>
+        <div class="user-info">
+            <div class="avatar">
+                <i class="fa fa-user-circle"></i>
+            </div>
+            <div class="user-details">
+                <h5>{{ current_user.username }}</h5>
+                <small>{{ current_user.email }}</small>
+            </div>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('dashboard') }}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+           
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('profile') }}">
+                    <i class="fas fa-user-cog"></i> Profile Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <button class="menu-toggle d-md-none" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+        </div>
+
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h1>Profile Settings</h1>
+                <p>Manage your account information</p>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-sidebar">
+                    <div class="profile-image">
+                        <i class="fa fa-user-circle fa-7x"></i>
+                        <button class="btn btn-sm btn-outline-secondary mt-2">Change Photo</button>
+                    </div>
+                    <div class="profile-menu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#personal-info" data-bs-toggle="tab">Personal Information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#account-settings" data-bs-toggle="tab">Account Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#password" data-bs-toggle="tab">Change Password</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#notifications" data-bs-toggle="tab">Notification Settings</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="profile-content tab-content">
+                    <div class="tab-pane fade show active" id="personal-info">
+                        <h3>Personal Information</h3>
+                        <form>
+                            <div class="mb-3 row">
+                                <label for="username" class="col-sm-3 col-form-label">Username</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="username" value="{{ current_user.username }}">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" id="email" value="{{ current_user.email }}">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="firstName" value="">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="lastName" value="">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="bio" class="col-sm-3 col-form-label">Bio</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" id="bio" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="account-settings">
+                        <h3>Account Settings</h3>
+                        <form>
+                            <div class="mb-3 row">
+                                <label for="language" class="col-sm-3 col-form-label">Language</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" id="language">
+                                        <option selected>English</option>
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <option>German</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="timezone" class="col-sm-3 col-form-label
+    <label for="timezone" class="col-sm-3 col-form-label">Timezone</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" id="timezone">
+                                        <option selected>UTC</option>
+                                        <option>UTC-5 (Eastern Time)</option>
+                                        <option>UTC-6 (Central Time)</option>
+                                        <option>UTC-7 (Mountain Time)</option>
+                                        <option>UTC-8 (Pacific Time)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="privacyProfile" checked>
+                                        <label class="form-check-label" for="privacyProfile">
+                                            Make my profile visible to others
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="password">
+                        <h3>Change Password</h3>
+                        <form>
+                            <div class="mb-3 row">
+                                <label for="currentPassword" class="col-sm-3 col-form-label">Current Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="currentPassword">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="newPassword" class="col-sm-3 col-form-label">New Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="newPassword">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="confirmPassword" class="col-sm-3 col-form-label">Confirm New Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="confirmPassword">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <button type="submit" class="btn btn-primary">Update Password</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="notifications">
+                        <h3>Notification Settings</h3>
+                        <form>
+                            <div class="mb-3">
+                                <h5>Email Notifications</h5>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emailJobAlerts" checked>
+                                    <label class="form-check-label" for="emailJobAlerts">
+                                        Job Alerts
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emailEventReminders" checked>
+                                    <label class="form-check-label" for="emailEventReminders">
+                                        Event Reminders
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emailSessionNotifications" checked>
+                                    <label class="form-check-label" for="emailSessionNotifications">
+                                        Session Notifications
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emailMentorshipRequests" checked>
+                                    <label class="form-check-label" for="emailMentorshipRequests">
+                                        Mentorship Requests
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <h5>Push Notifications</h5>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="pushJobAlerts" checked>
+                                    <label class="form-check-label" for="pushJobAlerts">
+                                        Job Alerts
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="pushEventReminders" checked>
+                                    <label class="form-check-label" for="pushEventReminders">
+                                        Event Reminders
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="pushSessionNotifications" checked>
+                                    <label class="form-check-label" for="pushSessionNotifications">
+                                        Session Notifications
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="pushMentorshipRequests" checked>
+                                    <label class="form-check-label" for="pushMentorshipRequests">
+                                        Mentorship Requests
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}  
