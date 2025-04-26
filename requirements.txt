@@ -3,5 +3,6 @@ flask-login
 flask-sqlalchemy 
 flask-bcrypt 
 flask-wtf 
-google-generativeai 
+google-generativeai
 python-dotenv
+gunicorn
